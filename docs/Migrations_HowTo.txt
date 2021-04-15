@@ -1,0 +1,26 @@
+--------------------------- CodeSwifterStarter --------------------------------------------
+CodeSwifterStarterDbContext
+---------------------
+
+!!! In the Package Manager Console select CodeSwifterStarter.Persistance as a default branch !!!
+
+Package Manager:
+
+To add a new migration named InitialCreate run:
+Add-Migration -Name InitialCreate -Context CodeSwifterStarterDbContext -StartupProject CodeSwifterStarter.Web.Api -OutputDir Migrations\
+
+To update the database run:
+Update-Database -Context CodeSwifterStarterDbContext -StartupProject CodeSwifterStarter.Web.Api
+
+To remove the migration named InitialCreate run:
+To add a new migration named InitialCreate run:
+remove-migration -force -Context CodeSwifterStarterDbContext -StartupProject CodeSwifterStarter.Web.Api
+
+Terminal:
+dotnet ef migrations add InitialCreate --context CodeSwifterStarterDbContext --startup-project CodeSwifterStarter.Web.Api --project CodeSwifterStarter.Persistence -o Migrations\ -- --environment Local
+
+To update the database run:
+dotnet ef database update --context CodeSwifterStarterDbContext --startup-project CodeSwifterStarter.Web.Api --project CodeSwifterStarter.Persistence -- --environment Local
+
+To remove the migration named InitialCreate run:
+dotnet ef migrations remove --force --context CodeSwifterStarterDbContext --startup-project CodeSwifterStarter.Web.Api --project CodeSwifterStarter.Persistence -- --environment Local

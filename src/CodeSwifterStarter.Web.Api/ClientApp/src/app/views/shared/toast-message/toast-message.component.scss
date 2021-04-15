@@ -1,0 +1,31 @@
+.mat-snack-bar-container {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100%;
+
+  &.alert {
+    background: var(--theme-mat-warn-A700);
+    color: var(--theme-mat-warn-contrast-A700);
+
+    .snackbar-action {
+      margin-left: 20px;
+
+      a,
+      a:visited {
+        color: var(--theme-mat-accent-500) !important;
+      }
+      a:focus,
+      a:hover {
+        color: var(--theme-mat-accent-500) !important;
+      }
+    }
+  }
+  &.normal {
+    background: var(--theme-background-dialog);
+    color: var(--theme-foreground-base-darker);
+  }
+}
+
+app-toast-message {
+  flex-grow: 1;
+}

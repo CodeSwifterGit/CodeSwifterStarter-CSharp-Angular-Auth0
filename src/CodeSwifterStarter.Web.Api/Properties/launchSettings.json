@@ -1,0 +1,55 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:6221",
+      "sslPort": 6220
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Local"
+      }
+    },
+    "Development": {
+      "commandName": "Project",
+      "commandLineArgs": "watch --urls \"https://localhost:6220\"",
+      "launchUrl": "http://localhost:4200",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:6220"
+    },
+    "Production": {
+      "commandName": "Project",
+      "commandLineArgs": "watch --urls \"https://localhost:6220\"",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:6220",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Production",
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "https://localhost:6220"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
+    },
+    "Staging": {
+      "commandName": "Project",
+      "commandLineArgs": "watch --urls \"https://localhost:6220\"",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Staging",
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "https://localhost:6220"
+    }
+  }
+}

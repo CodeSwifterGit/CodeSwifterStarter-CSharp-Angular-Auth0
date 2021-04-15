@@ -1,0 +1,26 @@
+@import '~@angular/material/theming';
+@include mat-core();
+@import 'themes';
+@import 'colors-css-vars';
+
+.dark-theme {
+    @include angular-material-theme($codeswifterstarter-dark-theme);
+    @include cssColorVariables(
+    map-get($codeswifterstarter-dark-theme, foreground),
+    map-get($codeswifterstarter-dark-theme, background),
+    map-get($codeswifterstarter-dark-theme, primary),
+    map-get($codeswifterstarter-dark-theme, accent),
+    map-get($codeswifterstarter-dark-theme, warn)
+  );
+}
+
+.light-theme {
+    @include angular-material-theme($codeswifterstarter-light-theme);
+    @include cssColorVariables(
+    map-get($codeswifterstarter-light-theme, foreground),
+    map-get($codeswifterstarter-light-theme, background),
+    map-get($codeswifterstarter-light-theme, primary),
+    map-get($codeswifterstarter-light-theme, accent),
+    map-get($codeswifterstarter-light-theme, warn)
+  );
+}

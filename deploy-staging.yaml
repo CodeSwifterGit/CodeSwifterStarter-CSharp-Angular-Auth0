@@ -1,0 +1,60 @@
+# This needs to be added before any deployment in order for deployment to go to a correct environment
+# kubectl label nodes YOUR_STAGING_NODE_NAME app=codeswifterstarter-staging
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codeswifterstarter-app-staging
+spec:
+  replicas: 1
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: codeswifterstarter-staging
+  template:
+    metadata:
+      labels:
+        app: codeswifterstarter-staging
+    spec:
+      containers:
+        - name: codeswifterstarter-webapp
+          image: ibicom/codeswifterstarter-webapp:staging-latest
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "250m"
+            limits:
+              memory: "500Mi"
+              cpu: "300m"
+          ports:
+            - name: http-port
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Staging
+            - name: DOTNET_ENVIRONMENT
+              value: Staging
+            - name: SEQ_KEY
+              value: SPECIFY_SEQ_KEY_HERE
+      nodeSelector:
+        app:  codeswifterstarter-staging
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codeswifterstarter-service-staging
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30090
+      protocol: TCP
+      name: http
+  selector:
+    app: codeswifterstarter-staging

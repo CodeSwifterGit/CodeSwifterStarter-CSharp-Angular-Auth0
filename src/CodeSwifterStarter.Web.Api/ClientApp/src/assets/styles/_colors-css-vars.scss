@@ -1,0 +1,265 @@
+@import "~@angular/material/theming";
+
+@mixin cssColorVariables(
+  $foregroundSet,
+  $backgroundSet,
+  $primaryColorSet,
+  $accentColorSet,
+  $warnColorSet
+) {
+  --theme-background-background: #{map-get($backgroundSet, background)};
+  --theme-background-status-bar: #{map-get($backgroundSet, status-bar)};
+  --theme-background-app-bar: #{map-get($backgroundSet, app-bar)};
+  --theme-background-hover: #{map-get($backgroundSet, hover)};
+  --theme-background-card: #{map-get($backgroundSet, card)};
+  --theme-background-dialog: #{map-get($backgroundSet, dialog)};
+  --theme-background-tooltip: #{map-get($backgroundSet, tooltip)};
+  --theme-background-disabled-button: #{map-get($backgroundSet, disabled-button)};
+  --theme-background-raised-button: #{map-get($backgroundSet, raised-button)};
+  --theme-background-focused-button: #{map-get($backgroundSet, focused-button)};
+  --theme-background-selected-button: #{map-get($backgroundSet, selected-button)};
+  --theme-background-selected-disabled-button: #{map-get(
+      $backgroundSet,
+      selected-disabled-button
+    )};
+  --theme-background-disabled-button-toggle: #{map-get(
+      $backgroundSet,
+      disabled-button-toggle
+    )};
+  --theme-background-unselected-chip: #{map-get($backgroundSet, unselected-chip)};
+  --theme-background-disabled-list-option: #{map-get(
+      $backgroundSet,
+      disabled-list-option
+    )};
+    
+  --theme-foreground-base: #{map-get($foregroundSet, base)};
+  --theme-foreground-divider: #{map-get($foregroundSet, divider)};
+  --theme-foreground-dividers: #{map-get($foregroundSet, dividers)};
+  --theme-foreground-disabled: #{map-get($foregroundSet, disabled)};
+  --theme-foreground-disabled-button: #{map-get($foregroundSet, disabled-button)};
+  --theme-foreground-disabled-text: #{map-get($foregroundSet, disabled-text)};
+  --theme-foreground-hint-text: #{map-get($foregroundSet, hint-text)};
+  --theme-foreground-secondary-text: #{map-get($foregroundSet, secondary-text)};
+  --theme-foreground-icon: #{map-get($foregroundSet, icon)};
+  --theme-foreground-icons: #{map-get($foregroundSet, icons)};
+  --theme-foreground-text: #{map-get($foregroundSet, text)};
+  --theme-foreground-slider-min: #{map-get($foregroundSet, slider-min)};
+  --theme-foreground-slider-off: #{map-get($foregroundSet, slider-off)};
+  --theme-foreground-slider-off-active: #{map-get(
+      $foregroundSet,
+      slider-off-active
+    )};
+
+  --theme-mat-primary-50: #{map-get($primaryColorSet, 50)};
+  --theme-mat-primary-100: #{map-get($primaryColorSet, 100)};
+  --theme-mat-primary-200: #{map-get($primaryColorSet, 200)};
+  --theme-mat-primary-300: #{map-get($primaryColorSet, 300)};
+  --theme-mat-primary-400: #{map-get($primaryColorSet, 400)};
+  --theme-mat-primary-500: #{map-get($primaryColorSet, 500)};
+  --theme-mat-primary-600: #{map-get($primaryColorSet, 600)};
+  --theme-mat-primary-700: #{map-get($primaryColorSet, 700)};
+  --theme-mat-primary-800: #{map-get($primaryColorSet, 800)};
+  --theme-mat-primary-900: #{map-get($primaryColorSet, 900)};
+  --theme-mat-primary-A100: #{map-get($primaryColorSet, A100)};
+  --theme-mat-primary-A200: #{map-get($primaryColorSet, A200)};
+  --theme-mat-primary-A400: #{map-get($primaryColorSet, A400)};
+  --theme-mat-primary-A700: #{map-get($primaryColorSet, A700)};
+
+  --theme-mat-primary-contrast-50: #{map-get(
+      map-get($primaryColorSet, contrast),
+      50
+    )};
+  --theme-mat-primary-contrast-100: #{map-get(
+      map-get($primaryColorSet, contrast),
+      100
+    )};
+  --theme-mat-primary-contrast-200: #{map-get(
+      map-get($primaryColorSet, contrast),
+      200
+    )};
+  --theme-mat-primary-contrast-300: #{map-get(
+      map-get($primaryColorSet, contrast),
+      300
+    )};
+  --theme-mat-primary-contrast-400: #{map-get(
+      map-get($primaryColorSet, contrast),
+      400
+    )};
+  --theme-mat-primary-contrast-500: #{map-get(
+      map-get($primaryColorSet, contrast),
+      500
+    )};
+  --theme-mat-primary-contrast-600: #{map-get(
+      map-get($primaryColorSet, contrast),
+      600
+    )};
+  --theme-mat-primary-contrast-700: #{map-get(
+      map-get($primaryColorSet, contrast),
+      700
+    )};
+  --theme-mat-primary-contrast-800: #{map-get(
+      map-get($primaryColorSet, contrast),
+      800
+    )};
+  --theme-mat-primary-contrast-900: #{map-get(
+      map-get($primaryColorSet, contrast),
+      900
+    )};
+  --theme-mat-primary-contrast-A100: #{map-get(
+      map-get($primaryColorSet, contrast),
+      A100
+    )};
+  --theme-mat-primary-contrast-A200: #{map-get(
+      map-get($primaryColorSet, contrast),
+      A200
+    )};
+  --theme-mat-primary-contrast-A400: #{map-get(
+      map-get($primaryColorSet, contrast),
+      A400
+    )};
+  --theme-mat-primary-contrast-A700: #{map-get(
+      map-get($primaryColorSet, contrast),
+      A700
+    )};
+
+  --theme-mat-accent-50: #{map-get($accentColorSet, 50)};
+  --theme-mat-accent-100: #{map-get($accentColorSet, 100)};
+  --theme-mat-accent-200: #{map-get($accentColorSet, 200)};
+  --theme-mat-accent-300: #{map-get($accentColorSet, 300)};
+  --theme-mat-accent-400: #{map-get($accentColorSet, 400)};
+  --theme-mat-accent-500: #{map-get($accentColorSet, 500)};
+  --theme-mat-accent-600: #{map-get($accentColorSet, 600)};
+  --theme-mat-accent-700: #{map-get($accentColorSet, 700)};
+  --theme-mat-accent-800: #{map-get($accentColorSet, 800)};
+  --theme-mat-accent-900: #{map-get($accentColorSet, 900)};
+  --theme-mat-accent-A100: #{map-get($accentColorSet, A100)};
+  --theme-mat-accent-A200: #{map-get($accentColorSet, A200)};
+  --theme-mat-accent-A400: #{map-get($accentColorSet, A400)};
+  --theme-mat-accent-A700: #{map-get($accentColorSet, A700)};
+
+  --theme-mat-accent-contrast-50: #{map-get(
+      map-get($accentColorSet, contrast),
+      50
+    )};
+  --theme-mat-accent-contrast-100: #{map-get(
+      map-get($accentColorSet, contrast),
+      100
+    )};
+  --theme-mat-accent-contrast-200: #{map-get(
+      map-get($accentColorSet, contrast),
+      200
+    )};
+  --theme-mat-accent-contrast-300: #{map-get(
+      map-get($accentColorSet, contrast),
+      300
+    )};
+  --theme-mat-accent-contrast-400: #{map-get(
+      map-get($accentColorSet, contrast),
+      400
+    )};
+  --theme-mat-accent-contrast-500: #{map-get(
+      map-get($accentColorSet, contrast),
+      500
+    )};
+  --theme-mat-accent-contrast-600: #{map-get(
+      map-get($accentColorSet, contrast),
+      600
+    )};
+  --theme-mat-accent-contrast-700: #{map-get(
+      map-get($accentColorSet, contrast),
+      700
+    )};
+  --theme-mat-accent-contrast-800: #{map-get(
+      map-get($accentColorSet, contrast),
+      800
+    )};
+  --theme-mat-accent-contrast-900: #{map-get(
+      map-get($accentColorSet, contrast),
+      900
+    )};
+  --theme-mat-accent-contrast-A100: #{map-get(
+      map-get($accentColorSet, contrast),
+      A100
+    )};
+  --theme-mat-accent-contrast-A200: #{map-get(
+      map-get($accentColorSet, contrast),
+      A200
+    )};
+  --theme-mat-accent-contrast-A400: #{map-get(
+      map-get($accentColorSet, contrast),
+      A400
+    )};
+  --theme-mat-accent-contrast-A700: #{map-get(
+      map-get($accentColorSet, contrast),
+      A700
+    )};
+
+  --theme-mat-warn-50: #{map-get($warnColorSet, 50)};
+  --theme-mat-warn-100: #{map-get($warnColorSet, 100)};
+  --theme-mat-warn-200: #{map-get($warnColorSet, 200)};
+  --theme-mat-warn-300: #{map-get($warnColorSet, 300)};
+  --theme-mat-warn-400: #{map-get($warnColorSet, 400)};
+  --theme-mat-warn-500: #{map-get($warnColorSet, 500)};
+  --theme-mat-warn-600: #{map-get($warnColorSet, 600)};
+  --theme-mat-warn-700: #{map-get($warnColorSet, 700)};
+  --theme-mat-warn-800: #{map-get($warnColorSet, 800)};
+  --theme-mat-warn-900: #{map-get($warnColorSet, 900)};
+  --theme-mat-warn-A100: #{map-get($warnColorSet, A100)};
+  --theme-mat-warn-A200: #{map-get($warnColorSet, A200)};
+  --theme-mat-warn-A400: #{map-get($warnColorSet, A400)};
+  --theme-mat-warn-A700: #{map-get($warnColorSet, A700)};
+
+  --theme-mat-warn-contrast-50: #{map-get(map-get($warnColorSet, contrast), 50)};
+  --theme-mat-warn-contrast-100: #{map-get(
+      map-get($warnColorSet, contrast),
+      100
+    )};
+  --theme-mat-warn-contrast-200: #{map-get(
+      map-get($warnColorSet, contrast),
+      200
+    )};
+  --theme-mat-warn-contrast-300: #{map-get(
+      map-get($warnColorSet, contrast),
+      300
+    )};
+  --theme-mat-warn-contrast-400: #{map-get(
+      map-get($warnColorSet, contrast),
+      400
+    )};
+  --theme-mat-warn-contrast-500: #{map-get(
+      map-get($warnColorSet, contrast),
+      500
+    )};
+  --theme-mat-warn-contrast-600: #{map-get(
+      map-get($warnColorSet, contrast),
+      600
+    )};
+  --theme-mat-warn-contrast-700: #{map-get(
+      map-get($warnColorSet, contrast),
+      700
+    )};
+  --theme-mat-warn-contrast-800: #{map-get(
+      map-get($warnColorSet, contrast),
+      800
+    )};
+  --theme-mat-warn-contrast-900: #{map-get(
+      map-get($warnColorSet, contrast),
+      900
+    )};
+  --theme-mat-warn-contrast-A100: #{map-get(
+      map-get($warnColorSet, contrast),
+      A100
+    )};
+  --theme-mat-warn-contrast-A200: #{map-get(
+      map-get($warnColorSet, contrast),
+      A200
+    )};
+  --theme-mat-warn-contrast-A400: #{map-get(
+      map-get($warnColorSet, contrast),
+      A400
+    )};
+  --theme-mat-warn-contrast-A700: #{map-get(
+      map-get($warnColorSet, contrast),
+      A700
+    )};
+}

@@ -1,0 +1,47 @@
+{
+  "#js/ts.implicitProjectConfig.experimentalDecorators#": true,
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "workbench.editor.enablePreview": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "html.format.wrapAttributes": "preserve-aligned",
+  "prettier.printWidth": 300,
+  "editor.tabSize": 2,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "editor.detectIndentation": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "angular.experimental-ivy": true,
+  "jenkins-jack.jenkins.connections": [
+    {
+      "name": "Remote Jenkins Build Server",
+      "uri": "https://jenkins.codeswifterstarter.com",
+      "username": "MY_REMOTE_USERNAME",
+      "password": "MY_REMOTE_PASSWORD",
+      "active": true
+    }
+  ],
+  "jenkins.pipeline.linter.connector.url": "https://jenkins.codeswifterstarter.com/pipeline-model-converter/validate",
+  "jenkins.pipeline.linter.connector.user": "MY_REMOTE_USERNAME",
+  "jenkins.pipeline.linter.connector.token": "MY_REMOTE_TOKEN",
+  "jenkins.pipeline.linter.connector.pass": "MY_REMOTE_PASSWORD",
+  "jenkins.pipeline.linter.connector.crumbUrl": "https://jenkins.codeswifterstarter.com/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,%22:%22,//crumb))",
+  "jenkins.pipeline.linter.connector.strictssl": true,
+}

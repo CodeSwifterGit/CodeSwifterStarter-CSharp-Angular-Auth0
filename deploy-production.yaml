@@ -1,0 +1,61 @@
+# This needs to be added before any deployment in order for deployment to go to a correct environment
+# kubectl label nodes YOUR_PRODUCTION_NODE1_NAME app=codeswifterstarter-production
+# kubectl label nodes YOUR_PRODUCTION_NODE2_NAME app=codeswifterstarter-production
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codeswifterstarter-app-production
+spec:
+  replicas: 2
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: codeswifterstarter-production
+  template:
+    metadata:
+      labels:
+        app: codeswifterstarter-production
+    spec:
+      containers:
+        - name: codeswifterstarter-webapp
+          image: ibicom/codeswifterstarter-webapp:master-latest
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "250m"
+            limits:
+              memory: "500Mi"
+              cpu: "300m"
+          ports:
+            - name: http-port
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: DOTNET_ENVIRONMENT
+              value: Production
+            - name: SEQ_KEY
+              value: SPECIFY_SEQ_KEY_HERE
+      nodeSelector:
+        app:  codeswifterstarter-production
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codeswifterstarter-service-production
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30080
+      protocol: TCP
+      name: http
+  selector:
+    app: codeswifterstarter-production

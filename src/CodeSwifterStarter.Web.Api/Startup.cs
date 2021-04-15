@@ -38,6 +38,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Context;
 
 namespace CodeSwifterStarter.Web.Api
 {
@@ -272,6 +274,15 @@ namespace CodeSwifterStarter.Web.Api
                     app.UseHttpsRedirection();
                 }
             }
+
+            // Add request logging to be able to identify attacks
+            app.Use(async (ctx, next) => {
+                using (LogContext.PushProperty("IPAddress", ctx.Connection.RemoteIpAddress))
+                {
+                    await next();
+                }
+            });
+            app.UseSerilogRequestLogging();
 
             // Hacker prevention
             app.UseCsp(csp =>

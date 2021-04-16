@@ -277,9 +277,12 @@ namespace CodeSwifterStarter.Web.Api
 
             // Add request logging to be able to identify attacks
             app.Use(async (ctx, next) => {
-                using (LogContext.PushProperty("IPAddress", ctx.Connection.RemoteIpAddress))
+                if (ctx?.Connection?.RemoteIpAddress != null)
                 {
-                    await next();
+                    using (LogContext.PushProperty("IPAddress", ctx.Connection.RemoteIpAddress))
+                    {
+                        await next();
+                    }
                 }
             });
             app.UseSerilogRequestLogging();

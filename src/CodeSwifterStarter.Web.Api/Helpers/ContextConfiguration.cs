@@ -10,7 +10,10 @@ namespace CodeSwifterStarter.Web.Api.Helpers
         {
             services.AddDbContext<TContextImplementation>(options =>
                 {
-                    options.UseSqlServer(connectionString);
+                    options.UseSqlServer(connectionString, o =>
+                    {
+                        o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    });
                     options.UseLazyLoadingProxies();
                 }
             );

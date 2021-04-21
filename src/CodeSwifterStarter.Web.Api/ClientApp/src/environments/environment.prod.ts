@@ -35,7 +35,7 @@ export const environment = {
   /** 
    * The name of timeout header.
   */
-  requestTimeoutHeaderName: 'CODESWIFTER-REQUEST-TIMEOUT',
+  requestTimeoutHeaderName: 'CODESWIFTERSTARTER-REQUEST-TIMEOUT',
   /** 
    * Notifications checking cycle in milliseconds.
   */

@@ -157,6 +157,7 @@ pipeline {
             'Preparing environment for running tests...',
             script: '''
                docker rmi $(docker images -f "dangling=true" -q)
+               docker rmi $(docker images -f "reference=change_me/codeswifterstarter*" -q)
             '''
         }
       }
@@ -184,7 +185,7 @@ pipeline {
                 sh label:
                   'Setting replicas to zero for staging environment...',
                   script: '''
-                    kubectl scale deployment codeswifterstarter-app-staging --replicas=0
+                    kubectl --kubeconfig "${KUBECTL_CONFIG_SECRET}" scale deployment codeswifterstarter-app-staging --replicas=0
                 '''
               }
             }
@@ -207,7 +208,7 @@ pipeline {
             'Deploying to staging environment...',
             script: '''
               kubectl --kubeconfig "${KUBECTL_CONFIG_SECRET}" patch deployment codeswifterstarter-app-staging -p \"{\\"spec\\":{\\"template\\":{\\"metadata\\":{\\"annotations\\":{\\"version\\":\\"${BASE_VERSION}.${BUILD_NUMBER}\\"}},\\"spec\\":{\\"containers\\":[{\\"name\\":\\"codeswifterstarter-webapp\\",\\"image\\":\\"${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER}\\"}]}}}}\"
-              kubectl scale deployment codeswifterstarter-app-staging --replicas=1
+              kubectl --kubeconfig "${KUBECTL_CONFIG_SECRET}" scale deployment codeswifterstarter-app-staging --replicas=1
           '''
         }
       }

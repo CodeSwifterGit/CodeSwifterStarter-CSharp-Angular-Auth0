@@ -3,7 +3,7 @@
     "dev": {
       "clientId": "CHANGE_ME",
       "domain": "codeswifterstarter-dev.eu.auth0.com",
-      "audience": "https://codeswifter-test-starter.us.auth0.com/api/v2/"
+      "audience": "https://codeswifterstarter.us.auth0.com/api/v2/"
     },
     "prod": {
       "clientId": "CHANGE_ME",

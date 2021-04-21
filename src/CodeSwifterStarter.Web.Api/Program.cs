@@ -31,8 +31,9 @@ namespace CodeSwifterStarter.Web.Api
 
             try
             {
-                Log.Information($"Starting up CodeSwifterStarter Web.Api, version {informationalVersion}");
-                Console.WriteLine($"CodeSwifter CodeSwifterStarter Web.Api, version {informationalVersion}");
+                var startupMessage = $"Starting up CodeSwifterStarter.Web.Api, version {informationalVersion}";
+                Log.Information(startupMessage);
+                Console.WriteLine(startupMessage);
                 BuildHost(args).Run();
             }
             catch (Exception ex)

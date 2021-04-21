@@ -1,36 +1,33 @@
-import { Injectable } from '@angular/core';
-import { ErrorDialogService } from './errordialog.service';
 import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
   HttpErrorResponse,
+  HttpEvent, HttpEventType, HttpHandler, HttpInterceptor,
+  HttpRequest,
+
+
+
   HttpXsrfTokenExtractor
 } from '@angular/common/http';
-
-import { Observable, throwError } from 'rxjs';
-import { mergeMap, catchError, timeout } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { errorDialogMessageTypeEnum } from 'app/models/misc/enums/error-dialog-message-type.enum';
-import { ErrorDialogMessage } from 'app/models/misc/errordialog-models';
+import { Observable, throwError } from 'rxjs';
+import { catchError, finalize, mergeMap, tap, timeout } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
-  constructor(public errorDialogService: ErrorDialogService,
-    private readonly auth: AuthService,
-    private readonly tokenExtractor: HttpXsrfTokenExtractor) {
-  }
+  constructor(private readonly auth: AuthService,
+    private readonly tokenExtractor: HttpXsrfTokenExtractor) { }
 
   private actions: string[] = ['POST', 'PUT', 'DELETE'];
   private forbiddenActions: string[] = ['HEAD', 'OPTIONS'];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Implement anti-forgery token
-    const token = this.tokenExtractor.getToken();
-    const permitted = this.findByActionName(request.method, this.actions);
-    const forbidden = this.findByActionName(request.method, this.forbiddenActions);;
+    let token = this.tokenExtractor.getToken();
+    let permitted = this.findByActionName(request.method, this.actions);
+    let forbidden = this.findByActionName(request.method, this.forbiddenActions);;
+    let lastResponse: HttpEvent<any>;
+    let error: HttpErrorResponse;
 
     if (permitted !== undefined && forbidden === undefined && token !== null) {
       request = request.clone({ setHeaders: { 'X-XSRF-TOKEN': token } });
@@ -38,7 +35,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     let requestTimeout = environment.waitForPendingRemoteDataRequest;
     if (request.headers.has(environment.requestTimeoutHeaderName)) {
-      requestTimeout = +request.headers.get(environment.requestTimeoutHeaderName);
+      requestTimeout = +request.headers.get(environment.requestTimeoutHeaderName)
     }
 
     // Add authorisation token
@@ -51,40 +48,31 @@ export class HttpConfigInterceptor implements HttpInterceptor {
             Content: 'application/json'
           }
         });
-        //environment.logToConsole(tokenReq);
-        return next.handle(tokenReq).pipe(timeout(requestTimeout));
+        return next.handle(tokenReq).pipe(
+          timeout(requestTimeout),
+          tap((response: HttpEvent<any>) => {
+            lastResponse = response;
+            if (response.type === HttpEventType.Response) {
+              console.log('success response', response);
+            }
+          }),
+          catchError((error: any) => {
+            return throwError(error);
+          }),
+          finalize(() => {
+            if (lastResponse.type === HttpEventType.Sent && !error) {
+              return throwError({ error: { type: 'Request cancelled', url: request.url } });
+            }
+          })
+        )
       }),
-      catchError((error: HttpErrorResponse) => {
-        environment.logToConsole(error && error.error && error.error.reason ? error.error.reason : 'Unknown error.');
-
-        const data = new ErrorDialogMessage();
-        data.type = errorDialogMessageTypeEnum.Warning;
-
-        switch (error.status) {
-        case 401:
-          data.title = 'HTTP_INTERCEPTOR.DANGER';
-          data.message = 'HTTP_INTERCEPTOR.NOT_AUTHORIZED';
-          break;
-        case 403:
-          data.title = 'HTTP_INTERCEPTOR.DANGER';
-          data.message = 'HTTP_INTERCEPTOR.FORBIDDEN';
-          break;
-        case 409:
-          data.title = 'HTTP_INTERCEPTOR.DANGER';
-          data.message = 'HTTP_INTERCEPTOR.FORBIDDEN';
-          break;
-        case 410:
-          data.title = 'HTTP_INTERCEPTOR.DANGER';
-          data.message = 'HTTP_INTERCEPTOR.CONFLICT';
-          break;
-        default:
-          data.title = 'HTTP_INTERCEPTOR.DANGER';
-          data.message = 'HTTP_INTERCEPTOR.GONE';
-          break;
-        }
-
-        this.errorDialogService.addMessage(data);
+      catchError((error: any) => {
         return throwError(error);
+      }),
+      finalize(() => {
+        if (lastResponse.type === HttpEventType.Sent && !error) {
+          return throwError({ type: 'Request cancelled', url: request.url, status: 499 });
+        }
       })
     );
   }

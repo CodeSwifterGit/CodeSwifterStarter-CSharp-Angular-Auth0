@@ -5,15 +5,15 @@ pipeline {
     BASE_VERSION='1.0.0'
     DOCKER_REPOSITORY='https://index.docker.io/v1/'
     DOCKER_REPOSITORY_SECRET='codeswifterstarter-docker-hub'
-    APP_IMAGE_NAME='change_me/codeswifterstarter-webapp'
-    TEST_IMAGE_NAME='change_me/codeswifterstarter-test'
+    APP_IMAGE_NAME='CHANGE_ME/codeswifterstarter-webapp'
+    TEST_IMAGE_NAME='CHANGE_ME/codeswifterstarter-test'
     // Make sure to have kubectl installed and accessible through $PATH variable
     KUBECTL_CONFIG_SECRET=credentials('do-codeswifterstarter-kube-config')
     BUILD_CONFIGURATION=sh(returnStdout: true, script: (env.BRANCH_NAME == 'master' ? 'echo Release' : 'echo Staging'))
   }
   options { 
-    buildDiscarder(logRotator(numToKeepStr: '10'))
-    disableConcurrentBuilds()
+	buildDiscarder(logRotator(numToKeepStr: '10'))
+	disableConcurrentBuilds()
   }
   stages {
     stage('Run unit tests') {
@@ -23,10 +23,8 @@ pipeline {
             'Preparing environment for running tests...',
             script: '''
               echo "Workspace is $WORKSPACE"
-              cd $WORKSPACE/src/CodeSwifterStarter.Web.Api/
-              docker images -a
+              cd $WORKSPACE/src/CodeSwifterStarter.Application.Tests/
               docker build -f "$WORKSPACE/src/CodeSwifterStarter.Application.Tests/Dockerfile" --force-rm -t ${TEST_IMAGE_NAME} "$WORKSPACE"
-              docker images -a
             '''
         }
       }
@@ -49,9 +47,7 @@ pipeline {
           script: '''
             echo "Workspace is $WORKSPACE"
             cd $WORKSPACE/src/CodeSwifterStarter.Web.Api/
-            docker images -a
-            docker build -f "$WORKSPACE/src/CodeSwifterStarter.Web.Api/Dockerfile"  --build-arg BUILD_NUMBER=${BUILD_NUMBER} --build-arg GIT_COMMIT=${GIT_COMMIT} --build-arg BUILD_CONFIGURATION=${BUILD_CONFIGURATION} --force-rm -t ${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER} "$WORKSPACE"
-            docker images -a
+            docker build -f "$WORKSPACE/src/CodeSwifterStarter.Web.Api/Dockerfile" --cache-from=${TEST_IMAGE_NAME}  --build-arg BUILD_NUMBER=${BUILD_NUMBER} --build-arg GIT_COMMIT=${GIT_COMMIT} --build-arg BUILD_CONFIGURATION=${BUILD_CONFIGURATION} --force-rm -t ${APP_IMAGE_NAME}:${BRANCH_NAME}-latest -t ${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER} "$WORKSPACE"
           '''
       }
       post {
@@ -63,90 +59,26 @@ pipeline {
         }
       }
     }
-         
-    stage('Push versioned docker image for the web app') {
+    stage('Push docker image for the web app') {
       when { 
         expression { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'staging' }
       }
       steps {
         script {
           docker.withRegistry("${DOCKER_REPOSITORY}", "${DOCKER_REPOSITORY_SECRET}") {
-            def image = docker.image('${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER}')
-            image.push()
+            def latestImage = docker.image('${APP_IMAGE_NAME}:${BRANCH_NAME}-latest')
+            def versionedImage = docker.image('${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER}')
+            latestImage.push()
+            versionedImage.push()
           }
         }
       }
       post {
         success {
-          echo 'Docker image image for the web app pushed successfully'
+          echo 'Docker image for the web app pushed successfully'
         }
         failure {
-          error 'Error pushing image image for the web app'
-        }
-      }
-    }
-    stage('Change tag of docker image for the web app to latest') {
-      when { 
-        expression { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'staging' }
-      }
-      steps {
-        script {
-          sh label:
-            'Changing tag...',
-            script: '''
-              docker tag ${APP_IMAGE_NAME}:${BRANCH_NAME}-${BASE_VERSION}.${BUILD_NUMBER} ${APP_IMAGE_NAME}:${BRANCH_NAME}-latest
-            '''
-        }
-      }
-      post {
-        success {
-          echo 'The tag for image for the web app changed to latest successfully'
-        }
-        failure {
-          error 'Error changing tag of image for the web app to latest'
-        }
-      }
-    }
-    stage('Push latest docker image for the web app') {
-      when { 
-        expression { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'staging' }
-      }
-      steps {
-        script {
-          docker.withRegistry("${DOCKER_REPOSITORY}", "${DOCKER_REPOSITORY_SECRET}") {
-              def image = docker.image('${APP_IMAGE_NAME}:${BRANCH_NAME}-latest')
-              image.push()
-            }    
-        }
-      }
-      post {
-        success {
-          echo 'Docker latest image for the web app pushed successfully'
-        }
-        failure {
-          error 'Error pushing latest image for the web app'
-        }
-      }
-    }
-    stage('Remove local image for the web app') {
-      when { 
-        expression { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'staging' }
-      }
-      steps {
-        script {
-          sh label:
-            'Removing image...',
-            script: '''
-              docker image rm --force ${APP_IMAGE_NAME}:${BRANCH_NAME}-latest
-            '''
-        }
-      }
-      post {
-        success {
-          echo 'Local image for the web app removed successfully'
-        }
-        failure {
-          error 'Error removing latest local image for the web app'
+          error 'Error pushing docker image for the web app'
         }
       }
     }
@@ -154,10 +86,10 @@ pipeline {
       steps {
         script {
           sh label:
-            'Preparing environment for running tests...',
+            'Removing dangling docker images...',
             script: '''
-               docker rmi $(docker images -f "dangling=true" -q)
-               docker rmi $(docker images -f "reference=change_me/codeswifterstarter*" -q)
+               docker rmi --force $(docker images -f "dangling=true" -q)
+               docker rmi --force $(docker images -f "reference=CHANGE_ME/codeswifterstarter-webapp*" -q)
             '''
         }
       }

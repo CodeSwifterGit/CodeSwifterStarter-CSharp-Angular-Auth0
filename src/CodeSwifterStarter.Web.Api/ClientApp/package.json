@@ -17,8 +17,7 @@
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ngcc — properties es2015 browser module main — first-only — create-ivy-entry-point — async false"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

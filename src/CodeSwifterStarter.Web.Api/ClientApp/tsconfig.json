@@ -6,7 +6,7 @@
     "baseUrl": "src/",
     "declaration": false,
     "downlevelIteration": true,
-    "module": "esnext",
+    "module": "ESNEXT",
     "moduleResolution": "node",
     "importHelpers": true,
     "emitDecoratorMetadata": true,
@@ -18,7 +18,7 @@
       "node_modules/@types"
     ],
     "lib": [
-      "esnext",
+      "ESNEXT",
       "DOM"
     ],
     "skipLibCheck": true

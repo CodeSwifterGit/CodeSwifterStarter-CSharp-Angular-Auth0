@@ -107,7 +107,7 @@
  
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm ci" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build-prod" Condition="'$(Configuration)'=='Release'" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr-prod" Condition=" '$(BuildServerSideRenderer)' == 'true' And '$(Configuration)'=='Release'" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build-staging" Condition="'$(Configuration)'=='Staging'" />

@@ -178,8 +178,8 @@ function setRolesToUser(user, context, callback) {
     }
   });
 
-  const mustHaveRoles = ['ManageTeamData'];
-  const missingRoles = mustHaveRoles.filter(m => context.authorization.roles.find(r => r !== m));
+  const mustHaveRoles = ['User'];
+  const missingRoles = mustHaveRoles.filter(m => !context.authorization.roles.find(r => r === m));
 
   if (missingRoles.length > 0) {
     management.getRoles({ per_page: 100, page: 0 }, function (err, roles) {

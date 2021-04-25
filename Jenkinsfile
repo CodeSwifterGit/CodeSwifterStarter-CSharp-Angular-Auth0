@@ -83,6 +83,9 @@ pipeline {
       }
     }
     stage('Remove dangling docker images') {
+      when { 
+        expression { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'staging' }
+      }
       steps {
         script {
           sh label:

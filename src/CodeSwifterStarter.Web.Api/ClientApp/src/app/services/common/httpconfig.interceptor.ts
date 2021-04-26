@@ -53,7 +53,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           tap((response: HttpEvent<any>) => {
             lastResponse = response;
             if (response.type === HttpEventType.Response) {
-              console.log('success response', response);
+              environment.logToConsole('success response', response);
             }
           }),
           catchError((error: any) => {

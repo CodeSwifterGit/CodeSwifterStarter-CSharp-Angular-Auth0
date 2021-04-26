@@ -297,6 +297,7 @@ namespace CodeSwifterStarter.Web.Api
                             .From("http://localhost:4200")
                             .From("https://localhost:6220")
                             .From("http://localhost:6221")
+                            .From("https://www.googletagmanager.com")
                             .AllowUnsafeInline()
                             .AllowUnsafeEval();
                         csp.AllowStyles
@@ -318,6 +319,7 @@ namespace CodeSwifterStarter.Web.Api
                     {
                         csp.AllowScripts
                             .FromSelf()
+                            .From("https://www.googletagmanager.com")
                             .AllowUnsafeInline()
                             .AllowUnsafeEval();
                         csp.AllowStyles

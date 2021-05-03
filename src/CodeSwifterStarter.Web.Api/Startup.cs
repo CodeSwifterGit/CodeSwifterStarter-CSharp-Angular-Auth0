@@ -237,7 +237,10 @@ namespace CodeSwifterStarter.Web.Api
             if (RuntimeEnvironment.IsDevelopment() ||
                 RuntimeEnvironment.EnvironmentName.Equals("Local", StringComparison.InvariantCultureIgnoreCase))
             {
-                services.AddSwaggerDocument();
+                services.AddSwaggerDocument(settings =>
+                {
+                    settings.Title = "CodeSwifterStarter API";
+                });
             }
 
             // Customise default API behavour
@@ -352,13 +355,17 @@ namespace CodeSwifterStarter.Web.Api
                     c.WithOrigins("http://localhost:4200", "https://localhost:6220", "http://localhost:6221"));
             }
 
-            app.UseOpenApi();
-
             // Consider making this publicly available
             if (RuntimeEnvironment.IsDevelopment() ||
                 RuntimeEnvironment.EnvironmentName.Equals("Local", StringComparison.InvariantCultureIgnoreCase))
             {
-                app.UseSwaggerUi3();
+                app.UseOpenApi();
+
+                // Access Swagger UI using https://localhost:6220/swagger/v1/swagger.json
+                app.UseSwaggerUi3(s =>
+                {
+                    s.DocumentTitle = "CodeSwifterStarter API";
+                }); 
             }
 
             if (RuntimeEnvironment.IsDevelopment())

@@ -308,6 +308,14 @@ More information on configuring Serilog can be found [here](https://nblumhardt.c
 
 If you only need search-oriented logging system, you can use [Elastic Search + Kibana](https://www.humankode.com/asp-net-core/logging-with-elasticsearch-kibana-asp-net-core-and-docker). For alert oriented purposes, we suggest [SEQ](https://datalust.co).
 
+### Swagger Support
+
+You can get swagger.json specification (currently set up for development or local environment only) by visiting
+https://localhost:6220/swagger/v1/swagger.json.
+
+To explore API specification, you can access Swagger UI by visiting
+https://localhost:6220/swagger
+
 ### Formatting Support
 
 There are formatting rules configured for C#, Typescript and JSON code.

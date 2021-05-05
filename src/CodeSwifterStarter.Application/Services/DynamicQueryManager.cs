@@ -78,9 +78,9 @@ namespace CodeSwifterStarter.Application.Services
         }
 
         public virtual async Task<UpdatedEntityAfterDependentRowsUpdate> UpdateEntityAndDependentRows(
-            TEntity parent, TUpdateCommand request, CancellationToken cancellationToken)
+            TEntity entity, TUpdateCommand request, CancellationToken cancellationToken)
         {
-            return await Task.FromResult(new UpdatedEntityAfterDependentRowsUpdate(parent, false));
+            return await Task.FromResult(new UpdatedEntityAfterDependentRowsUpdate(entity, false));
         }
 
         internal virtual Task ReloadEntityDataAsync(TEntity entity, CancellationToken cancellationToken)

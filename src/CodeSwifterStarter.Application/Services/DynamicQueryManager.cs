@@ -28,9 +28,9 @@ namespace CodeSwifterStarter.Application.Services
             return GetQueryWithIncludes(Context.Set<TEntity>().AsQueryable()).AsNoTracking();
         }
 
-        public virtual IQueryable<TEntity> GetQueryWithIncludes(IQueryable<TEntity> querable)
+        public virtual IQueryable<TEntity> GetQueryWithIncludes(IQueryable<TEntity> queryable)
         {
-            return querable;
+            return queryable;
         }
 
         public abstract Task<List<TEntityLookupModel>> RequestData(

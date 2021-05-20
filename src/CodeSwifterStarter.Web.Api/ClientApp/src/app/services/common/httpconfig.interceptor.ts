@@ -26,8 +26,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     let token = this.tokenExtractor.getToken();
     let permitted = this.findByActionName(request.method, this.actions);
     let forbidden = this.findByActionName(request.method, this.forbiddenActions);;
-    let lastResponse: HttpEvent<any>;
-    let error: HttpErrorResponse;
 
     if (permitted !== undefined && forbidden === undefined && token !== null) {
       request = request.clone({ setHeaders: { 'X-XSRF-TOKEN': token } });
@@ -35,8 +33,46 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     let requestTimeout = environment.waitForPendingRemoteDataRequest;
     if (request.headers.has(environment.requestTimeoutHeaderName)) {
-      requestTimeout = +request.headers.get(environment.requestTimeoutHeaderName)
+      requestTimeout = +request.headers.get(environment.requestTimeoutHeaderName);
     }
+
+    if (request.headers.get('Authorization') === 'YES') {
+      return this.executeAuthorized(request, next, requestTimeout);
+    } else {
+      return this.executeAnonymously(request, next, requestTimeout);
+    }
+
+  }
+
+  private executeAnonymously(request: HttpRequest<any>, next: HttpHandler, requestTimeout: number | Date): Observable<HttpEvent<any>> {
+    let lastResponse: HttpEvent<any>;
+    let error: HttpErrorResponse;
+
+    const tokenReq = request.clone({
+      setHeaders: {
+        Accept: 'application/json',
+        Content: 'application/json'
+      }
+    });
+    return next.handle(tokenReq).pipe(
+      timeout(requestTimeout),
+      tap((response: HttpEvent<any>) => {
+        lastResponse = response;
+      }),
+      catchError((error: any) => {
+        return throwError(error);
+      }),
+      finalize(() => {
+        if (lastResponse.type === HttpEventType.Sent && !error) {
+          return throwError({ error: { type: 'Request cancelled', url: request.url } });
+        }
+      })
+    );
+  }
+
+  private executeAuthorized(request: HttpRequest<any>, next: HttpHandler, requestTimeout: number | Date): Observable<HttpEvent<any>> {
+    let lastResponse: HttpEvent<any>;
+    let error: HttpErrorResponse;
 
     // Add authorisation token
     return this.auth.getTokenSilently$().pipe(
@@ -52,9 +88,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           timeout(requestTimeout),
           tap((response: HttpEvent<any>) => {
             lastResponse = response;
-            if (response.type === HttpEventType.Response) {
-              environment.logToConsole('success response', response);
-            }
           }),
           catchError((error: any) => {
             return throwError(error);
@@ -64,7 +97,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
               return throwError({ error: { type: 'Request cancelled', url: request.url } });
             }
           })
-        )
+        );
       }),
       catchError((error: any) => {
         return throwError(error);

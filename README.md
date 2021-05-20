@@ -392,6 +392,24 @@ If you will be using a **public image** instead (we don't think you will, though
 - If you've created a load balancer, [configure it to use SSL Termination](https://www.digitalocean.com/docs/networking/load-balancers/how-to/ssl-termination/). In other words, it will decrypt SSL traffic using the certificate and forward it to your Kubernetes cluster's node(s) unencrypted through the private network. (Sidenote: Since the traffic from the load-balancer to your nodes is happening inside your private network, it doesn't matter if it is unencrypted). **Make sure to redirect port 443 to 30080** (listed as **nodePort in the yaml** file, **or change it to fit your needs**). Also make sure to **change the health port** in your load balancer, so it can check health of your nodes periodically.
 - In the zone editor (on Digital Ocean the navigate to **Networking, Domains, select your domain**), **add A record for your domain**, and let it **point to your load-balancer**.
 
+#### Customizing CRUD operations using CodeSwifter Editor
+
+There are five customization methods, not mutually excluded.
+
+1. You can use Property Scope do determine where property will be rendered. The options are:
+
+- Base Domain Class (where all properties which generate database column should be put, also this class is used for creating records)
+- Domain Class (where navigation properties will be rendered)
+- Lookup Class (should be selected if property will be sent from backend to frontend)
+- Update Class (should be selected if property will be sent from frontend to backend as part of the update)
+
+2. If Property Scope is set up not to render properties into Base Domain Class nor Domain Class, you can tick "Do not generate database column" and provide a getter expression, which should be defined as an expression, the same way you would write it in your backend class. For example "Quantity \* Price \* (1 + Vat/100)".
+3. All classes are rendered as partial, so by creating a separate file, you can put custom code there. I suggest using naming convention ClassName.Custom.cs.
+4. DynamicQueryManager is the base class for all inherited QueryManagers (for example ContactQueryManager), and it contains a number of virtual methods/functions which can be overriden. I've created a commit in our sample repository which you can find at [https://github.com/CodeSwifterGit/adwenture-works/commit/201db0618b56dea3421510b0bcde8ae34e307ca2](https://github.com/CodeSwifterGit/adwenture-works/commit/201db0618b56dea3421510b0bcde8ae34e307ca2)
+5. CodeSwifter allows you to import templates. Once imported, you can modify them however you want. For me, that is the preferred method. For example, if you want to add some dependency injection into query managers, you would change template named EntityQueryManager.
+6. Lastly, if you need even more customization, you can fork the boilerplate repository, change things there, amend your templates accordingly, update boilerplate connection in your CodeSwifter project ([https://codeswifter.com/website/account/repos](https://codeswifter.com/website/account/repos)) and regenerate the code.
+
+
 ### Boilerplate Project Support
 
 If you find a bug, or want to request a feature that can be beneficial for other users too, please create an issue in this repository, or fork this repository and create a pull request.

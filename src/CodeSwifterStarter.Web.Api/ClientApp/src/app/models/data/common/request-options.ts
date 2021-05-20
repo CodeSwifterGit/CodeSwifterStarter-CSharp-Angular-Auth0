@@ -7,4 +7,5 @@ export interface IRequestOptions {
   sortByExpression?: Array<ISortedPropertyInfo>;
   pageIndex?: number;
   pageSize?: number;
+  anonymous?: boolean;
 }

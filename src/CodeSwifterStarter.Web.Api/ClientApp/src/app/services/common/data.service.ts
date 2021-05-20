@@ -14,11 +14,15 @@ export class DataService {
 
   }
 
-  httpOptions(parameters?: HttpParams, observe: any = 'body', reportProgress: boolean = false, timeout: number = environment.waitForPendingRemoteDataRequest) {
+  httpOptions(parameters?: HttpParams, observe: any = 'body', reportProgress: boolean = false, timeout: number = environment.waitForPendingRemoteDataRequest, anonymous: boolean = false) {
 
-    const headers = (new HttpHeaders())
+    let headers = (new HttpHeaders())
       .append('Content-Type', 'application/json')
       .append(environment.requestTimeoutHeaderName, timeout.toString());
+
+    if (!anonymous) {
+      headers = headers.append('Authorization', `YES`)
+    }
 
     if (!parameters)
       parameters = new HttpParams();
@@ -45,8 +49,9 @@ export class DataService {
   get<TResult>(requestUrl: string, options?: IRequestOptions, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
     const timeout = !!options && !!options.timeout ? options.timeout : environment.waitForPendingRemoteDataRequest;
+    const anonymous = !!options && !!options.anonymous ? options.anonymous : false;
 
-    return this.http.get<TResult>(requestUrl, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout));
+    return this.http.get<TResult>(requestUrl, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout, anonymous));
   }
 
   create<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe?: 'body', reportProgress?: boolean): Observable<TResult>;
@@ -55,8 +60,9 @@ export class DataService {
   create<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
     const timeout = !!options && !!options.timeout ? options.timeout : environment.waitForPendingRemoteDataRequest;
+    const anonymous = !!options && !!options.anonymous ? options.anonymous : false;
 
-    return this.http.post<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout));
+    return this.http.post<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout, anonymous));
   }
 
   update<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe?: 'body', reportProgress?: boolean): Observable<TResult>;
@@ -65,8 +71,9 @@ export class DataService {
   update<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
     const timeout = !!options && !!options.timeout ? options.timeout : environment.waitForPendingRemoteDataRequest;
+    const anonymous = !!options && !!options.anonymous ? options.anonymous : false;
 
-    return this.http.put<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout));
+    return this.http.put<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout, anonymous));
   }
 
   delete(requestUrl: string, options?: IRequestOptions, observe?: 'body', reportProgress?: boolean): Observable<any>;
@@ -75,8 +82,9 @@ export class DataService {
   delete(requestUrl: string, options?: IRequestOptions, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
     const timeout = !!options && !!options.timeout ? options.timeout : environment.waitForPendingRemoteDataRequest;
+    const anonymous = !!options && !!options.anonymous ? options.anonymous : false;
 
-    return this.http.delete<any>(requestUrl, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout));
+    return this.http.delete<any>(requestUrl, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout, anonymous));
   }
 
   post<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe?: 'body', reportProgress?: boolean): Observable<TResult>;
@@ -85,8 +93,9 @@ export class DataService {
   post<TRequest, TResult>(requestUrl: string, model: TRequest, options?: IRequestOptions, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
     const timeout = !!options && !!options.timeout ? options.timeout : environment.waitForPendingRemoteDataRequest;
+    const anonymous = !!options && !!options.anonymous ? options.anonymous : false;
 
-    return this.http.post<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout));
+    return this.http.post<TResult>(requestUrl, model, this.httpOptions(this.buildQueryParameters(options), observe, reportProgress, timeout, anonymous));
   }
 
   buildQueryParameters(requestOptions?: IRequestOptions): HttpParams {

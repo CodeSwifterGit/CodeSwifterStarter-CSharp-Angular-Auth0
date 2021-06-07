@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  private _destroy$ = new Subject<boolean>();
+  private _destroy = new Subject<boolean>();
 
   currentTheme = new ReactiveObject<string>(null, this.componentCacheService, 'app/currentTheme');
 
@@ -23,7 +23,7 @@ export class AppComponent {
   ngOnInit(): void {
     this.dynamicThemeService.onThemeChanged
       .pipe(
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy)
       )
       .subscribe((themeType) => {
         this.currentTheme.value = themeType;
@@ -31,7 +31,7 @@ export class AppComponent {
   }
 
   ngOnDestroy(): void {
-    this._destroy$.next(true);
-    this._destroy$.complete();
+    this._destroy.next(true);
+    this._destroy.complete();
   }
 }

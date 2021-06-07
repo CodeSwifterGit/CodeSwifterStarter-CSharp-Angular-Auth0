@@ -17,7 +17,7 @@ import { take, takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  private _destroy$ = new Subject<boolean>();
+  private _destroy = new Subject<boolean>();
 
   signInInformation = new ReactiveObject<string>('Not signed in', this.componentCacheService, 'home/signInInformation');
 
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.authService.userProfile$
       .pipe(
-        takeUntil(this._destroy$),
+        takeUntil(this._destroy),
       )
       .subscribe(result => {
         if (!!result && !!result.sub) {
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(
       take(1),
-      takeUntil(this._destroy$)
+      takeUntil(this._destroy)
     ).subscribe(result => {
       if (result) {
         environment.logToConsole('User selected to remove the row.');
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(
       take(1),
-      takeUntil(this._destroy$)
+      takeUntil(this._destroy)
     ).subscribe(result => {
       if (result) {
         environment.logToConsole('User selected to remove the row.');
@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this._destroy$.next(true);
-    this._destroy$.complete();
+    this._destroy.next(true);
+    this._destroy.complete();
   }
 }

@@ -47,12 +47,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  private _destroy$ = new Subject<boolean>();
+  private _destroy = new Subject<boolean>();
 
   constructor(overlayContainer: OverlayContainer, private readonly dynamicThemeService: DynamicThemeService) {
     this.dynamicThemeService.onThemeChanged
       .pipe(
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy)
       )
       .subscribe((themeType) => {
         const themeColorMode = themeType === selectedThemeEnum.Dark ? 'dark' : 'light';

@@ -214,7 +214,7 @@ namespace CodeSwifterStarter.Web.Api
                 .AddJwtBearer(options =>
                 {
                     options.Authority = _serverConfiguration.SecurityProvider.Authority;
-                    options.Audience = _serverConfiguration.SecurityProvider.Audience;
+                    options.Audience = _serverConfiguration.SecurityProvider.SingleSignOn.Audience;
                 });
 
             var authDomain = _serverConfiguration.SecurityProvider.Authority;

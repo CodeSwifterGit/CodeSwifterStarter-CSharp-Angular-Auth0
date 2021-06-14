@@ -40,7 +40,7 @@ namespace CodeSwifterStarter.Infrastructure.Services
             _serverConfiguration = serverConfiguration;
 
             _tokenClient = new RestClient(serverConfiguration.SecurityProvider.Authority.EnsureEndsWith('/'));
-            _apiClient = new RestClient(serverConfiguration.SecurityProvider.Audience.EnsureEndsWith('/'));
+            _apiClient = new RestClient(serverConfiguration.SecurityProvider.ManagementApi.Audience.EnsureEndsWith('/'));
         }
 
         private async Task<AccessToken> GetAccessToken(CancellationToken cancellationToken)
@@ -58,7 +58,7 @@ namespace CodeSwifterStarter.Infrastructure.Services
                     grant_type = "client_credentials",
                     client_id = _serverConfiguration.SecurityProvider.ManagementApi.ClientId,
                     client_secret = _serverConfiguration.SecurityProvider.ManagementApi.ClientSecret,
-                    audience = _serverConfiguration.SecurityProvider.Audience
+                    audience = _serverConfiguration.SecurityProvider.ManagementApi.Audience
                 };
 
                 var request = new RestRequest("/oauth/token", Method.POST);

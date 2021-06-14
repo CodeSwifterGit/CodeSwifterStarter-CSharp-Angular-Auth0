@@ -1,9 +1,9 @@
 {
   "authConfig": {
     "dev": {
-      "clientId": "CHANGE_ME",
-      "domain": "codeswifterstarter-dev.eu.auth0.com",
-      "audience": "https://codeswifterstarter.us.auth0.com/api/v2/"
+      "clientId": "UxOeRK2nZyNjI8b513kMTtu7bB6lArsL",
+      "domain": "codeswifter-angular.us.auth0.com",
+      "audience": "https://api.codeswifter-angular.com"
     },
     "prod": {
       "clientId": "CHANGE_ME",

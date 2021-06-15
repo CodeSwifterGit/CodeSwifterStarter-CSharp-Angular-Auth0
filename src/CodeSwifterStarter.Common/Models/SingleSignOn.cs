@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CodeSwifterStarter.Common.Models
+﻿namespace CodeSwifterStarter.Common.Models
 {
     public class SingleSignOn
     {

@@ -1,20 +1,6 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:6221",
-      "sslPort": 6220
-    }
-  },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Local"
-      }
-    },
     "Development": {
       "commandName": "Project",
       "commandLineArgs": "watch --urls \"https://localhost:6220\"",

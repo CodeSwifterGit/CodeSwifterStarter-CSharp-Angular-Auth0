@@ -8,6 +8,8 @@ namespace CodeSwifterStarter.Common.Models
 {
     public class SingleSignOn
     {
-        public string Audience { get; set; }
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+        public AuthApi Api { get; set; }
     }
 }

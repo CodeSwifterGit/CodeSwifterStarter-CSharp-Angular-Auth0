@@ -19,6 +19,7 @@ import { take, takeUntil } from 'rxjs/operators';
 export class HomeComponent implements OnInit {
   private _destroy = new Subject<boolean>();
 
+  isAuthenticated: ReactiveObject<Boolean> = new ReactiveObject<Boolean>(this.authService.loggedIn, this.componentCacheService, 'home/isAuthenticated');
   signInInformation = new ReactiveObject<string>('Not signed in', this.componentCacheService, 'home/signInInformation');
 
   constructor(
@@ -36,8 +37,10 @@ export class HomeComponent implements OnInit {
       )
       .subscribe(result => {
         if (!!result && !!result.sub) {
-          this.signInInformation.value = `Signed in as {result.sub}`;
+          this.isAuthenticated.value = true;
+          this.signInInformation.value = result.given_name;
         } else {
+          this.isAuthenticated.value = false;
           this.signInInformation.value = 'Not signed in';
         }
       });
@@ -98,12 +101,12 @@ export class HomeComponent implements OnInit {
       () => { window.location.reload(); });
   }
 
-  signInToggle() {
-    if (!this.authService.isAuthenticated$) {
-      this.authService.login(location.href);
-    } else {
-      this.authService.logout();
-    }
+  signIn() {
+    this.authService.login(location.href);
+  }
+
+  signOut() {
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {

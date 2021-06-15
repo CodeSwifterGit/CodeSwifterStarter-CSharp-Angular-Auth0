@@ -1,0 +1,12 @@
+@import "/src/assets/styles/themes.scss";
+
+:host {
+  .authorize-div {
+    background-color: var(--theme-background-background) !important;
+    color: var(--theme-foreground-text) !important;
+    padding-top: 5px;
+    padding-left: 5px;
+    min-height: 2400px;
+    width: 100%;
+  }
+}

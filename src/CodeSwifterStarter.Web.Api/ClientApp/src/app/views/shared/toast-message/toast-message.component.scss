@@ -1,3 +1,5 @@
+@import "/src/assets/styles/themes.scss";
+
 .mat-snack-bar-container {
   display: flex !important;
   flex-direction: column !important;
@@ -21,8 +23,8 @@
     }
   }
   &.normal {
-    background: var(--theme-background-dialog);
-    color: var(--theme-foreground-base-darker);
+    background: var(--theme-mat-accent-500);
+    color: var(--theme-mat-accent-contrast-500);
   }
 }
 

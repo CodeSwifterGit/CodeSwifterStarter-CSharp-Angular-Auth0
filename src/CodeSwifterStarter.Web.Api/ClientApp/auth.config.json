@@ -6,9 +6,9 @@
       "audience": "https://api.codeswifter-angular.com"
     },
     "prod": {
-      "clientId": "CHANGE_ME",
-      "domain": "CHANGE_ME",
-      "audience": "CHANGE_ME"
+      "clientId": "AUTH0_SPA_APP_CLIENT_ID",
+      "domain": "YOUR_AUTH0_TENANT_DOMAIN",
+      "audience": "YOUR_AUTH0_TENANT_CUSTOM_API_IDENTIFIER"
     }
   }
 }

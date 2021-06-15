@@ -7,7 +7,7 @@ export const environment = {
   /**
    * The path where user should be redirected after the successful login
    */
-  authorizePath: '/authorize',
+  authorizePath: '/home/authorize',
   /**
    * The number of milliseconds to wait before the loading indicator is shown.
    */

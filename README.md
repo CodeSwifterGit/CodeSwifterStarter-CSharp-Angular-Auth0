@@ -145,7 +145,8 @@ Make sure to update **src/CodeSwifterStarter.Web.Api/ClientApp/auth.config.json*
 
 ##### Configuring Rules for New Users
 
-In order to add initial credentials for each user that creates an account (on Auth0 when accessing your application), please navigate to **Auth Pipeline** - **Rules** and add new rule named **Add default roles**. Next edit the rule and paste the following code (make sure to update the values based on the comments in the script):
+In order to add initial roles for each user that creates an account (on Auth0 when accessing your application), please add all security requirements as roles in Auth0 application.
+Next, navigate to **Auth Pipeline** - **Rules** and add new rule named **Add default roles**. Next edit the rule and paste the following code (make sure to update the values based on the comments in the script):
 
 ```
 function setRolesToUser(user, context, callback) {
@@ -168,17 +169,19 @@ function setRolesToUser(user, context, callback) {
   const ManagementClient = require('auth0@2.27.0').ManagementClient;
   const management = new ManagementClient({
     domain: auth0.domain,
-    clientId: 'API_APP_CLIENT_ID', // Put Client ID of your Auth0 backend Application (in the left navigation pane of Auth0 select Applications, Applications and find your backend app)
-	clientSecret: 'API_APP_SECRET', // Put secret of your Auth0 backend application
+    clientId: 'MACHINE2MACHINE_APP_CLIENT_ID', // Put Client ID of your Auth0 Machine2Machine Application (in the left navigation pane of Auth0 select Applications, Applications and find your backend app)
+  	clientSecret: 'MACHINE2MACHINE_APP_SECRET', // Put secret of your Auth0 Machine2Machine application
     scope: "read:users update:users read:roles create:role_members read:role_members",
-    audience: 'https://codeswifter-dev.eu.auth0.com/api/v2/',
+    audience: 'https://codeswifter-dev.eu.auth0.com/api/v2/', // Put the audience of your management app here
     tokenProvider: {
       enableCache: true,
       cacheTTLInSeconds: 10
     }
   });
 
-  const mustHaveRoles = ['User'];
+  const mustHaveRoles = ['ReadNonSensitiveData', 'WriteNonSensitiveData']; // PROVIDE LIST OF YOUR SECURITY REQUIREMENTS HERE
+  context.authorization = context.authorization || {};
+  context.authorization.roles = context.authorization.roles || [];  
   const missingRoles = mustHaveRoles.filter(m => !context.authorization.roles.find(r => r === m));
 
   if (missingRoles.length > 0) {

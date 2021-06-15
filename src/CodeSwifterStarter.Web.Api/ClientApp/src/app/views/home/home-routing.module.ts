@@ -1,10 +1,23 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthorizeComponent } from 'app/views/home/authorize/authorize.component';
 import { HomeComponent } from "app/views/home/home.component";
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }
+  {
+    path: '', component: HomeComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'authorize'
+      },
+      {
+        path: 'authorize',
+        component: AuthorizeComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

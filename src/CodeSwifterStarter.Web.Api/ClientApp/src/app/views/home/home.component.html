@@ -1,28 +1,36 @@
 <div class="column-layout_1 column">
   <h1 class="title">Welcome to CodeSwifterStarter App</h1>
-  <p class="text">Here you can test a few services which are the part of the boilerplatte project. Please inspect app component source code to see how they are invoked.</p>
+  <div class="text">Here you can test a few services which are the part of the boilerplatte project.</div>
+  <div class="text">Please inspect <u>app.component.ts</u> source code to see how they are invoked.</div>
   <div class="column-layout_2 column">
     <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="showToastMessage()">
-      Show Toast message
+      Toast Message
     </button>
     <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="showToastAlert()">
-      show toast alert
+      Toast Alert
     </button>
-    <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="showConfirmationDialog()">
-      Show confirmation dialog
+    <button mat-raised-button [disabled]="false" color="primary" class="raised-button"
+            (click)="showConfirmationDialog()">
+      Confirmation Dialog
     </button>
     <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="showMessage()">
-      show message
+      Message
     </button>
     <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="toogleTheme()">
-      toggle dark/light theme
+      Dark/Light Theme
     </button>
-    <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="signInToggle()">
-      Sign in/out using auth0
+    <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="signOut()"
+            *ngIf="(isAuthenticated.stream$ | async)">
+      Sign Out ({{ signInInformation.stream$ | async }})
     </button>
-    <div class="text">
+    <button mat-raised-button [disabled]="false" color="primary" class="raised-button" (click)="signIn()"
+            *ngIf="!(isAuthenticated.stream$ | async)">
+      Sign In
+    </button>
+    <div class="text" *ngIf="!(isAuthenticated.stream$ | async)">
       {{ signInInformation.stream$ | async }}
     </div>
   </div>
-  <p class="text">For more tutorials please visit <a href="https://www.youtube.com/channel/UCCeMaNWjckkbWjxdWXTfcGA">CodeSwifter YouTube Channel</a></p>
+  <p class="text">For more tutorials please visit <a href="https://www.youtube.com/channel/UCCeMaNWjckkbWjxdWXTfcGA"
+       target="_blank">CodeSwifter YouTube Channel</a></p>
 </div>
